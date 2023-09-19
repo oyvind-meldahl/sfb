@@ -21,7 +21,7 @@
 
         <div id="websiderSection">
       <div class="row my-3">
-        <label for="product1">Advokatbladet.NYTT</label>
+        <label for="product1">Advokatbladet.NYTTE</label>
         <input type="number" name="product1" id="product1" min="0" placeholder="0" class="mx-5">
       
         <input type="text" name="product1text" id="product1text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
@@ -162,6 +162,36 @@ const inputFields = document.querySelectorAll("#orderForm input[type='number']")
 for (const inputField of inputFields) {
     inputField.addEventListener("input", calculateTotal);
 }
+
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  const myForm = event.target;
+  let formData = new FormData(myForm);
+
+  // Filter out empty form fields
+  for (const [name, value] of formData.entries()) {
+    if (value.trim() === "" || value === "0") {
+      formData.delete(name);
+    }
+  }
+
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(formData).toString(),
+  })
+    .then(() => console.log("Form successfully submitted"))
+    .catch((error) => alert(error));
+};
+
+document
+  .querySelector("form")
+  .addEventListener("submit", handleSubmit);
+
+
 
   </script>
 
