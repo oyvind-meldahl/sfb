@@ -167,29 +167,8 @@ for (const inputField of inputFields) {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-
-  const myForm = event.target;
-  let formData = new FormData(myForm);
-
-  // Filter out empty form fields
-  for (const [name, value] of formData.entries()) {
-    if (value.trim() === "" || value === "0") {
-      formData.delete(name);
-    }
-  }
-
-  fetch("/", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams(formData).toString(),
-  })
-    .then(() => console.log("Form successfully submitted"))
-    .catch((error) => alert(error));
-};
-
-document
-  .querySelector("form")
-  .addEventListener("submit", handleSubmit);
+console.log("hello")
+}
 
 
 
