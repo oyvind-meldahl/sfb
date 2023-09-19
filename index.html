@@ -21,7 +21,7 @@
 
         <div id="websiderSection">
       <div class="row my-3">
-        <label for="product1">Advokatbladet.no</label>
+        <label for="product1">Advokatbladet.NYTT</label>
         <input type="number" name="product1" id="product1" min="0" placeholder="0" class="mx-5">
       
         <input type="text" name="product1text" id="product1text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
@@ -49,13 +49,38 @@
       </div>
     </div>
 
-    <button id="sendEmailBtn" class="btn btn-success" type="submit">Send Bestilling</button>
+    <button id="proceedBtn" class="btn btn-primary" type="button">Proceed to Contact Details</button>
+
+
+    <div id="contactDetails" style="display: none;">
+        <h3>Contact Details:</h3>
+        <div class="row my-3">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="row my-3">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <button id="sendEmailBtn" class="btn btn-success" type="submit">Send Bestilling</button>
+    </div>
+
+
+
+
+    
+
+
+
+
+
+
     </form>
 
 <!-- Email send button -->
 
 
-    <div class="total my-5">
+    <div class="total my-5" id="total">
       <h2>Total sum:</h2><span id="total-value">0</span>,-
     </div>
   </div>
@@ -69,6 +94,31 @@
   
   
   <script>
+
+document.getElementById('proceedBtn').addEventListener('click', function() {
+    // Remove empty fields from the DOM
+    for (const input of document.querySelectorAll("#orderForm input")) {
+        if (input.type === 'text' && input.value.trim() === "") {
+            input.parentElement.remove();
+        } else if (input.type === 'number' && (input.value === "" || input.value === "0")) {
+            input.parentElement.remove();
+        }
+    }
+
+    // Hide the proceed button itself
+    this.style.display = "none";
+
+     // Hide the "Websider" and "Pakker" buttons
+     document.getElementById('websiderBtn').style.display = "none";
+    document.getElementById('pakkerBtn').style.display = "none";
+    document.getElementById('total').style.display = "none";
+
+
+    // Show contact details section
+    document.getElementById('contactDetails').style.display = "block";
+});
+
+
 
 let total = 0;
 
