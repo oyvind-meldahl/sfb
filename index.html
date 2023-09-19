@@ -62,7 +62,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.sendgrid.com/docs/Static/docs.min.js"></script>
+  
+  
+  
+  
   <script>
+
+function removeEmptyFieldsOnSubmit(event) {
+    // Loop through all input fields in the form
+    for (const input of document.querySelectorAll("#orderForm input")) {
+        // If the input field is empty, disable it to prevent its inclusion in the form data
+        if (input.value.trim() === "") {
+            input.setAttribute("disabled", "disabled");
+        }
+    }
+}
+
+
+const orderForm = document.getElementById("orderForm");
+
+orderForm.addEventListener("submit", removeEmptyFieldsOnSubmit);
+
 
 let total = 0;
 
