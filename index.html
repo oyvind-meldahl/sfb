@@ -16,7 +16,7 @@
     </div>
 
     <!-- Form for "Websider" -->
-    <form id="websiderForm" class="order-form">
+    <form id="websiderForm" class="order-form" name="websiderForm" method="post" data-netlify="true">
       <div class="row my-3">
         <label for="product1">Produkt 1</label>
         <input type="number" name="product1" id="product1" min="0" placeholder="0" class="mx-5">
@@ -27,11 +27,11 @@
         <input type="number" name="product2" id="product2" min="0" placeholder="0" class="mx-5">
         <input type="text" name="product2text" id="product2text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
       </div>
-      
+      <button type="submit">Send</button>
     </form>
 
     <!-- Form for "Pakker" -->
-    <form id="pakkerForm" class="order-form">
+    <form id="pakkerForm" class="order-form" name="pakkerForm" method="post" data-netlify="true">
       <div class="row my-3">
         <label for="package1">Pakke 1</label>
         <input type="number" name="package1" id="package1" min="0" placeholder="0" class="mx-5">
