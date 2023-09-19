@@ -19,8 +19,9 @@
     <form id="orderForm" name="orderForm" method="post" data-netlify="true">
         <div id="websiderSection">
       <div class="row my-3">
-        <label for="product1">Produkt 1</label>
+        <label for="product1">Advokatbladet.no</label>
         <input type="number" name="product1" id="product1" min="0" placeholder="0" class="mx-5">
+      
         <input type="text" name="product1text" id="product1text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
       </div>
       <div class="row my-3">
@@ -61,27 +62,31 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.sendgrid.com/docs/Static/docs.min.js"></script>
   
   
   
   
   <script>
 
+
 function removeEmptyFieldsOnSubmit(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+
     // Loop through all input fields in the form
-    for (const input of document.querySelectorAll("#orderForm input")) {
+    const inputs = document.querySelectorAll("#orderForm input");
+    for (const input of inputs) {
         // If the input field is empty, disable it to prevent its inclusion in the form data
         if (input.value.trim() === "") {
             input.setAttribute("disabled", "disabled");
         }
     }
+
+    // Programmatically submit the form after modifications
+    event.target.submit();
 }
 
 
-const orderForm = document.getElementById("orderForm");
-
-orderForm.addEventListener("submit", removeEmptyFieldsOnSubmit);
 
 
 let total = 0;
