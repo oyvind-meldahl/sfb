@@ -114,7 +114,9 @@ const handleSubmit = (event) => {
 
     let formContents = {};
     formData.forEach((value, key) => {
-        formContents[key] = value;
+        if (value.trim() !== "") {
+            formContents[key] = value;
+        }
     });
 
     fetch("/", {
