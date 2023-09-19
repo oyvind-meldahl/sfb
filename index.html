@@ -73,15 +73,19 @@
 function handleSubmit(event) {
     event.preventDefault(); // Prevent the default form submission
 
-    // Construct a new FormData object from the form
-    let formData = new FormData(orderForm);
+    // Clone the form
+    let clonedForm = orderForm.cloneNode(true);
 
-    // Iterate over the FormData and remove pairs with empty values
-    for (let [key, value] of formData.entries()) {
-        if (value.trim() === "") {
-            formData.delete(key);
+    // Remove empty inputs from the cloned form
+    const inputs = clonedForm.querySelectorAll('input');
+    for (const input of inputs) {
+        if (input.value.trim() === "") {
+            input.parentNode.removeChild(input);
         }
     }
+
+    // Construct a new FormData object from the cloned form
+    let formData = new FormData(clonedForm);
 
     // Submit the pruned FormData using the Fetch API
     fetch("/", {
@@ -93,7 +97,7 @@ function handleSubmit(event) {
     }).then(response => {
         if (response.ok) {
             // Redirect to a thank you page or display a success message
-            window.alert = "thank-you";
+            alert("/thank-you");
         } else {
             // Handle errors
             alert('Submission failed. Please try again.');
@@ -103,6 +107,7 @@ function handleSubmit(event) {
 
 const orderForm = document.getElementById("orderForm");
 orderForm.addEventListener("submit", handleSubmit);
+
 
 
 
