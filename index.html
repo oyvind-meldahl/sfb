@@ -11,8 +11,6 @@
 
     <!-- Buttons to switch between "Websider" and "Pakker" -->
     <div class="text-center mb-5">
-      <button id="websiderBtn" class="btn btn-primary">Nettsider</button>
-      <button id="pakkerBtn" class="btn btn-primary">Pakker</button>
     </div>
 
     <!-- Form for "Websider" -->
@@ -35,140 +33,105 @@
       
     
 
-    <!-- Form for "Pakker" -->
-    <div id="pakkerSection" style="display: none;">
-      <div class="row my-3">
-        <label for="package1">Pakke 1</label>
-        <input type="number" name="package1" id="package1" min="0" placeholder="0" class="mx-5">
-        <input type="text" name="package1text" id="package1text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
-      </div>
-      <div class="row my-3">
-        <label for="package2">Pakke 2</label>
-        <input type="number" name="package2" id="package2" min="0" placeholder="0" class="mx-5">
-        <input type="text" name="package2text" id="package2text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
-      </div>
-    </div>
 
-    <button id="proceedBtn" class="btn btn-primary" type="button">Proceed to Contact Details</button>
-
-
-    <div id="contactDetails" style="display: none;">
-        <h3>Contact Details:</h3>
-        <div class="row my-3">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" required>
-        </div>
-        <div class="row my-3">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-        </div>
-        <button id="sendEmailBtn" class="btn btn-success" type="submit">Send Bestilling</button>
-    </div>
-
-
-
-
+    <button id="sendEmailBtn" class="btn btn-success" type="button">Til Kontakt-detaljer</button>
     
 
 
 
-
-
-
-    </form>
-
-<!-- Email send button -->
-
-
-    <div class="total my-5" id="total">
-      <h2>Total sum:</h2><span id="total-value">0</span>,-
+<!-- Hidden contact details section -->
+<div id="contactDetailsSection" style="display: none;">
+    <h3>Contact Details</h3>
+    <div class="row my-3">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" placeholder="Your Name" class="mx-5">
     </div>
-  </div>
+    <div class="row my-3">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" placeholder="Your Email" class="mx-5">
+    </div>
+    <!-- ... add more contact fields as needed ... -->
+
+    <button id="finalSubmitBtn" class="btn btn-success" type="submit">Final Submit</button>
+</div>
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+</form>
+
+
+
+
+
   
   
   
   
   <script>
 
-document.getElementById('proceedBtn').addEventListener('click', function() {
-    // Remove empty fields from the DOM
-    for (const input of document.querySelectorAll("#orderForm input")) {
-        if (input.type === 'text' && input.value.trim() === "") {
-            input.parentElement.remove();
-        } else if (input.type === 'number' && (input.value === "" || input.value === "0")) {
-            input.parentElement.remove();
-        }
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    const showContactButton = document.getElementById('sendEmailBtn');
+    showContactButton.addEventListener('click', showContactDetails);
 
-    // Hide the proceed button itself
-    this.style.display = "none";
-
-     // Hide the "Websider" and "Pakker" buttons
-     document.getElementById('websiderBtn').style.display = "none";
-    document.getElementById('pakkerBtn').style.display = "none";
-    document.getElementById('total').style.display = "none";
-
-
-    // Show contact details section
-    document.getElementById('contactDetails').style.display = "block";
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', handleSubmit);
 });
 
+const showContactDetails = () => {
+    // Reveal the contact details section and hide the initial show contact button
+    document.getElementById('contactDetailsSection').style.display = 'block';
+    document.getElementById('sendEmailBtn').style.display = 'none';
+};
 
 
-let total = 0;
 
-// Function to calculate and update the total
-function calculateTotal() {
-    total = 0;
-    for (const input of document.querySelectorAll("#orderForm input[type='number']")) {
-        total += Number(input.value);
-    }
-    const formattedTotal = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    document.getElementById("total-value").innerHTML = formattedTotal;
-}
 
-// Function to switch between "Websider" and "Pakker" sections
-function switchSection(sectionId) {
-    if (sectionId === "websiderSection") {
-        document.getElementById("websiderSection").style.display = "block";
-        document.getElementById("pakkerSection").style.display = "none";
-    } else {
-        document.getElementById("websiderSection").style.display = "none";
-        document.getElementById("pakkerSection").style.display = "block";
-    }
-    calculateTotal();
-}
-
-// Button event listeners to toggle between "Websider" and "Pakker"
-const websiderBtn = document.getElementById("websiderBtn");
-const pakkerBtn = document.getElementById("pakkerBtn");
-
-websiderBtn.addEventListener("click", () => {
-    switchSection("websiderSection");
-});
-
-pakkerBtn.addEventListener("click", () => {
-    switchSection("pakkerSection");
-});
-
-// Input event listeners to update the total in real-time
-const inputFields = document.querySelectorAll("#orderForm input[type='number']");
-
-for (const inputField of inputFields) {
-    inputField.addEventListener("input", calculateTotal);
-}
 
 
 
 const handleSubmit = (event) => {
-  event.preventDefault();
-console.log("hello")
+    event.preventDefault();
+
+    const form = event.target;
+
+    // Remove empty rows
+    const rows = form.querySelectorAll('.row');
+    rows.forEach(row => {
+        const inputs = Array.from(row.querySelectorAll('input'));
+        const isEmptyRow = inputs.every(input => input.value.trim() === "");
+
+        if (isEmptyRow) {
+            row.remove();
+        }
+    });
+
+    const formData = new FormData(form);
+
+    let formContents = {};
+    formData.forEach((value, key) => {
+        formContents[key] = value;
+    });
+
+    fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(formData).toString(),
+  })
+  .then(() => console.log("Form successfully submitted"))
+    .catch((error) => alert(error));
+
+
+    console.log(formContents);
+    console.log('Form submitted!');
 }
+
+
+
 
 
 

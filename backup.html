@@ -20,3 +20,79 @@ const myForm = event.target;
 document
   .querySelector("form")
   .addEventListener("submit", handleSubmit);
+
+
+
+
+
+
+
+
+
+  document.getElementById('proceedBtn').addEventListener('click', function() {
+    // Remove empty fields from the DOM
+    for (const input of document.querySelectorAll("#orderForm input")) {
+        if (input.type === 'text' && input.value.trim() === "") {
+            input.parentElement.remove();
+        } else if (input.type === 'number' && (input.value === "" || input.value === "0")) {
+            input.parentElement.remove();
+        }
+    }
+
+    // Hide the proceed button itself
+    this.style.display = "none";
+
+     // Hide the "Websider" and "Pakker" buttons
+     document.getElementById('websiderBtn').style.display = "none";
+    document.getElementById('pakkerBtn').style.display = "none";
+    document.getElementById('total').style.display = "none";
+
+
+    // Show contact details section
+    document.getElementById('contactDetails').style.display = "block";
+});
+
+
+
+let total = 0;
+
+// Function to calculate and update the total
+function calculateTotal() {
+    total = 0;
+    for (const input of document.querySelectorAll("#orderForm input[type='number']")) {
+        total += Number(input.value);
+    }
+    const formattedTotal = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    document.getElementById("total-value").innerHTML = formattedTotal;
+}
+
+// Function to switch between "Websider" and "Pakker" sections
+function switchSection(sectionId) {
+    if (sectionId === "websiderSection") {
+        document.getElementById("websiderSection").style.display = "block";
+        document.getElementById("pakkerSection").style.display = "none";
+    } else {
+        document.getElementById("websiderSection").style.display = "none";
+        document.getElementById("pakkerSection").style.display = "block";
+    }
+    calculateTotal();
+}
+
+// Button event listeners to toggle between "Websider" and "Pakker"
+const websiderBtn = document.getElementById("websiderBtn");
+const pakkerBtn = document.getElementById("pakkerBtn");
+
+websiderBtn.addEventListener("click", () => {
+    switchSection("websiderSection");
+});
+
+pakkerBtn.addEventListener("click", () => {
+    switchSection("pakkerSection");
+});
+
+// Input event listeners to update the total in real-time
+const inputFields = document.querySelectorAll("#orderForm input[type='number']");
+
+for (const inputField of inputFields) {
+    inputField.addEventListener("input", calculateTotal);
+}
