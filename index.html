@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <script src="https://cdn.sendgrid.com/docs/Static/docs.min.js"></script>
+    
 
   <div class="container mt-5">
 
@@ -16,7 +16,8 @@
     </div>
 
     <!-- Form for "Websider" -->
-    <form id="websiderForm" class="order-form" name="websiderForm" method="post" data-netlify="true">
+    <form id="orderForm" name="orderForm" method="post" data-netlify="true">
+        <div id="websiderSection">
       <div class="row my-3">
         <label for="product1">Produkt 1</label>
         <input type="number" name="product1" id="product1" min="0" placeholder="0" class="mx-5">
@@ -27,11 +28,12 @@
         <input type="number" name="product2" id="product2" min="0" placeholder="0" class="mx-5">
         <input type="text" name="product2text" id="product2text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
       </div>
-      <button type="submit">Send</button>
-    </form>
+        </div>
+      
+    
 
     <!-- Form for "Pakker" -->
-    <form id="pakkerForm" class="order-form" name="pakkerForm" method="post" data-netlify="true">
+    <div id="pakkerSection" style="display: none;">
       <div class="row my-3">
         <label for="package1">Pakke 1</label>
         <input type="number" name="package1" id="package1" min="0" placeholder="0" class="mx-5">
@@ -42,10 +44,11 @@
         <input type="number" name="package2" id="package2" min="0" placeholder="0" class="mx-5">
         <input type="text" name="package2text" id="package2text" placeholder="Kommentarer til bestillingen her" style="width: 50%;">
       </div>
-
+    </div>
     </form>
+
 <!-- Email send button -->
-<button id="sendEmailBtn" class="btn btn-success">Send Bestilling</button>
+<button id="sendEmailBtn" class="btn btn-success" type="submit">Send Bestilling</button>
 
     <div class="total my-5">
       <h2>Total sum:</h2><span id="total-value">0</span>,-
@@ -58,55 +61,49 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.sendgrid.com/docs/Static/docs.min.js"></script>
   <script>
-    let total = 0;
-    let activeForm = document.getElementById("websiderForm"); 
 
-    // Function to calculate and update the total
-    function calculateTotal() {
-      total = 0;
-      for (const input of document.querySelectorAll(".order-form input[type='number']")) {
+let total = 0;
+
+// Function to calculate and update the total
+function calculateTotal() {
+    total = 0;
+    for (const input of document.querySelectorAll("#orderForm input[type='number']")) {
         total += Number(input.value);
-      }
-    // Format the total value with thousands separators
+    }
     const formattedTotal = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-      document.getElementById("total-value").innerHTML = formattedTotal;
+    document.getElementById("total-value").innerHTML = formattedTotal;
+}
+
+// Function to switch between "Websider" and "Pakker" sections
+function switchSection(sectionId) {
+    if (sectionId === "websiderSection") {
+        document.getElementById("websiderSection").style.display = "block";
+        document.getElementById("pakkerSection").style.display = "none";
+    } else {
+        document.getElementById("websiderSection").style.display = "none";
+        document.getElementById("pakkerSection").style.display = "block";
     }
+    calculateTotal();
+}
 
-    // Function to switch between "Websider" and "Pakker" forms
-    function switchForm(formId) {
-      activeForm.style.display = "none";
-      activeForm = document.getElementById(formId);
-      activeForm.style.display = "block";
-      calculateTotal();
-    }
+// Button event listeners to toggle between "Websider" and "Pakker"
+const websiderBtn = document.getElementById("websiderBtn");
+const pakkerBtn = document.getElementById("pakkerBtn");
 
-    // Button event listeners to toggle between "Websider" and "Pakker"
-    const websiderBtn = document.getElementById("websiderBtn");
-    const pakkerBtn = document.getElementById("pakkerBtn");
+websiderBtn.addEventListener("click", () => {
+    switchSection("websiderSection");
+});
 
-    websiderBtn.addEventListener("click", () => {
-      switchForm("websiderForm");
-    });
+pakkerBtn.addEventListener("click", () => {
+    switchSection("pakkerSection");
+});
 
-    pakkerBtn.addEventListener("click", () => {
-      switchForm("pakkerForm");
-    });
+// Input event listeners to update the total in real-time
+const inputFields = document.querySelectorAll("#orderForm input[type='number']");
 
-    // Input event listeners to update the total in real-time
-    const inputFields = document.querySelectorAll(".order-form input[type='number']");
-
-    for (const inputField of inputFields) {
-      inputField.addEventListener("input", calculateTotal);
-    }
-
-    // Hide pakker forms initially
-    websiderForm.style.display = "display";
-    pakkerForm.style.display = "none";
-
-
-   
-
-
+for (const inputField of inputFields) {
+    inputField.addEventListener("input", calculateTotal);
+}
 
   </script>
 
